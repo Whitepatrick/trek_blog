@@ -1,0 +1,21 @@
+#!/bin/bash
+NAME="twentyeyes_web"
+FLASKDIR=$HOME/workspace/trek_blog
+VENVDIR=$HOME/workspace/trek_blog/devenv
+
+echo "Starting $NAME"
+
+# activate the virtualenv
+cd $VENVDIR
+source bin/activate
+
+export PYTHONPATH=$FLASKDIR:$PYTHONPATH
+
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your unicorn
+exec gunicorn trek_blog:app -b 127.0.0.1:8000 \
+  --name $NAME \
+  --log-level=debug
