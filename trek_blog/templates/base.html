@@ -5,6 +5,8 @@
     <title>Trek Blog!</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>.content {padding-top: 80px;} a.brand {color: #fff }</style>
+    <style>body {background-color:#999999; color:#333;}</style>
+    <style>a:link {COLOR: #006600;} a:visited {COLOR: #006633;} a:hover {COLOR: #003333;} a:active {COLOR: #00FF00;}</style>
   </head>
 
   <body>
@@ -14,10 +16,13 @@
       <div class="container">
         <div class="navbar-header">
           <h2>
-              <a href="/" class="brand">Trek Blog</a> <small>Bold Predictions!</small>
+              <a href="/" class="brand">twenty eyes dot org </a>
           </h2>
         </div>
         <div class="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/about">About Me </a></li>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
@@ -29,6 +34,7 @@
         {% block content %}{% endblock %}
       </div>
     </div>
+
     {% block js_footer %}{% endblock %}
   </body>
 </html>

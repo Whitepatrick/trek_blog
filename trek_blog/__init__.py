@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request, jsonify
 from flask.ext.mongoengine import MongoEngine
 # credentials file .gitignored
 from secret import SECRET_KEY as sk
@@ -9,7 +9,6 @@ app.config["SECRET_KEY"] = sk
 
 db = MongoEngine(app)
 
-
 def register_blueprints(app):
     # Prevents circular imports
     from trek_blog.views import posts
@@ -18,6 +17,10 @@ def register_blueprints(app):
     app.register_blueprint(admin)
 
 register_blueprints(app)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run()
