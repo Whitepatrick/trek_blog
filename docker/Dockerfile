@@ -5,11 +5,13 @@ RUN apt-get update && apt-get install -y git \
                                          python-pip \
                                          lib32ncurses5-dev
 
+RUN pip install virtualenv
 RUN git clone https://github.com/whitepatrick/trek_blog.git /trek_blog
+RUN bash -c "cd /trek_blog && virtualenv prodenv && source /trek_blog/prodenv/bin/activate"
 RUN bash -c "pip install -r /trek_blog/requirements.txt"
 
-COPY gunicorn_start /trek_blog
+COPY prod_gunicorn /trek_blog
 VOLUME /trek_blog
 WORKDIR /trek_blog
 
-CMD ["gunicorn_start"]
+CMD ["prod_gunicorn"]

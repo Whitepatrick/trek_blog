@@ -1,8 +1,10 @@
 nginx:
   build: docker/nginx/.
-  volumes:
-    - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  net: "host"
+  name: "nginx"
+app:
+  build: docker/.
+  name: "app"
   ports:
-    - "80:80"
-    - "443:443"
-    
+    - 8000
+  command: /trek_blog/gunicorn_start

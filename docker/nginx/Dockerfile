@@ -6,23 +6,26 @@ RUN echo "America/New York" > /etc/timezone \
 
 RUN echo "deb http://nginx.org/packages/debian/ jessie nginx" >> /etc/apt/sources.list.d/nginx.list
 RUN apt-key adv --fetch-keys "http://nginx.org/keys/nginx_signing.key"
-
 RUN apt-get update && apt-get install -y --no-install-recommends nginx \
                                                                  openssl \
                                                                  ca-certificates
 
-RUN rm -rf /etc/nginx/conf.d/*
 RUN rm -rf /srv/www/*
 
-ADD nginx.conf /etc/nginx/conf.d
-ADD flaskconfig /etc/nginx/sites-enabled
-RUN echo "daemon off;" >> /etc/nginx/conf.d/nginx.conf
+COPY default /etc/nginx/sites-enabled/
+COPY nginx.conf /etc/nginx/conf.d/
 
 VOLUME ["/etc/nginx"]
 VOLUME ["/srv/www"]
 
-CMD ["nginx"]
+RUN cd /etc/nginx && openssl req -x509 -nodes -days 365 \
+                     -subj '/C=US/ST=New York/L=New York/CN=www.20eyes.org' \
+                     -newkey rsa:2048 -keyout /etc/nginx/cert.key -out /etc/nginx/cert.crt
 
-EXPOSE 80
-EXPOSE 443
-EXPOSE 8000
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]
