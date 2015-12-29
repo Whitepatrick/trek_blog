@@ -6,3 +6,12 @@ nginx:
     - "80:80"
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock:ro
+  links:
+    - app
+
+app:
+  build: .
+  name: "app"
+  container_name: app
+  ports:
+    - "8000:8000"
